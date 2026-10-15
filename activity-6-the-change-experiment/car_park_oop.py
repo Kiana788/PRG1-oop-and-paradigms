@@ -1,3 +1,4 @@
+
 """
 Car Park (object oriented version)
 
@@ -15,6 +16,7 @@ class Bay:
         self.number = number
         self.size = size
         self.registration = None
+        self.history = []
 
     def is_free(self):
         return self.registration is None
@@ -22,8 +24,12 @@ class Bay:
     def park(self, registration):
         if self.registration is None:
             self.registration = registration
+            self.history.append(registration)
             return True
         return False
+
+    def get_history(self):
+        return self.history.copy()
 
     def leave(self):
         leaving = self.registration
@@ -34,6 +40,10 @@ class Bay:
         if self.registration is None:
             return f"Bay {self.number} ({self.size}): free"
         return f"Bay {self.number} ({self.size}): {self.registration}"
+
+    def export_line(self):
+        registration = self.registration or "free"
+        return f"{self.number},{self.size},{registration}"
 
 
 class CarPark:
@@ -70,6 +80,11 @@ class CarPark:
             lines.append("  " + bay.describe())
         return "\n".join(lines)
 
+    def export_bays(self, filename="bays.txt"):
+        with open(filename, "w", encoding="utf-8") as file:
+            for bay in self.bays:
+                file.write(bay.export_line() + "\n")
+
 
 park = CarPark("Ada Street")
 park.add_bay(1, "standard")
@@ -89,3 +104,6 @@ print(f"XY99 ZZZ is in bay {park.find('XY99 ZZZ')}")
 print(f"QQ11 QQQ is in bay {park.find('QQ11 QQQ')}")
 print("---")
 print(park.report())
+
+park.export_bays()
+print("Bay data exported to bays.txt")

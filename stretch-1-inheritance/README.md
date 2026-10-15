@@ -10,6 +10,12 @@ An `ElectricBay` is a `Bay` that also knows about a charger.
 ## Predict
 
 Six lines of output. The last two are the ones to think about.
+Bay 1 (standard): free
+Bay 2 (standard): free  [22 kW charger, idle]
+Bay 1 (standard): AB12 CDE
+Bay 2 (standard): XY99 ZZZ  [charging at 22 kW]
+False
+True
 
 ## Run
 
@@ -25,6 +31,10 @@ Execute and compare.
 - `isinstance(electric, Bay)` is `True`. An electric bay is a bay. Is a bay an
   electric bay? Check.
 - `describe` exists on both classes. Which one runs, and how does Python decide?
+1. `ElectricBay` inherits `is_free()` from `Bay`, so it can use that method without defining it again.
+2. `super().park(registration)` reuses the parent's parking logic. This avoids duplicating code and allows the child class to add charging behaviour.
+3. `isinstance(electric, Bay)` returns `True` because `ElectricBay` inherits from `Bay`. However, an ordinary `Bay` is not automatically an `ElectricBay`.
+4. Python uses the method defined on the object's class first. Therefore, `ElectricBay.describe()` runs for electric bays, and `Bay.describe()` runs for ordinary bays.
 
 ## Modify
 

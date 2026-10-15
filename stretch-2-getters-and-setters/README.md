@@ -11,6 +11,13 @@ decide what is allowed.
 
 Work out every line of output. The last line of the program does not print
 anything, and that is deliberate.
+AB12 CDE
+30
+60
+Rejected: -5 is not a sensible number of days
+60
+Rejected: a fortnight is not a sensible number of days
+60
 
 ## Run
 
@@ -27,6 +34,10 @@ Execute and compare. The program ends with an error on purpose.
   raised?
 - The final line raises an `AttributeError`. Is that better or worse than
   silently ignoring the assignment? Argue it.
+1. A leading underscore in `_registration` signals that the attribute is intended for internal use. It is a convention, not a strict access restriction.
+2. `@property` allows `registration` and `days_valid` to be read as attributes. `@days_valid.setter` defines how `days_valid` can be changed. No registration setter is provided, so assigning to `registration` raises an `AttributeError`.
+3. Invalid values leave `days_valid` unchanged because the setter prints a message and returns without updating the attribute. Raising `ValueError` would make invalid assignments easier for calling code to detect and handle.
+4. Raising `AttributeError` for an unsupported registration assignment is useful because it makes the mistake visible rather than silently ignoring it.
 
 ## Modify
 

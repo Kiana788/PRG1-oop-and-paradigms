@@ -1,3 +1,4 @@
+
 """
 Car Park (procedural version)
 
@@ -11,7 +12,12 @@ side.
 
 
 def make_bay(number, size):
-    return {"number": number, "size": size, "registration": None}
+    return {
+        "number": number,
+        "size": size,
+        "registration": None,
+        "history": []
+    }
 
 
 def is_free(bay):
@@ -36,8 +42,13 @@ def park(bays, registration, size):
     for bay in bays:
         if bay["size"] == size and is_free(bay):
             bay["registration"] = registration
+            bay["history"].append(registration)
             return bay["number"]
     return None
+
+
+def bay_history(bay):
+    return bay["history"]
 
 
 def find(bays, registration):
@@ -54,6 +65,15 @@ def report(name, bays):
     return "\n".join(lines)
 
 
+def export_bays(bays, filename="bays.txt"):
+    with open(filename, "w", encoding="utf-8") as file:
+        for bay in bays:
+            registration = bay["registration"] or "free"
+            file.write(
+                f"{bay['number']},{bay['size']},{registration}\n"
+            )
+
+
 bays = [
     make_bay(1, "standard"),
     make_bay(2, "standard"),
@@ -63,11 +83,16 @@ bays = [
 
 print(f"Bays: {len(bays)}")
 print(f"Free standard bays: {free_bays(bays, 'standard')}")
+
 print(f"AB12 CDE parked in bay {park(bays, 'AB12 CDE', 'standard')}")
 print(f"XY99 ZZZ parked in bay {park(bays, 'XY99 ZZZ', 'standard')}")
 print(f"LM34 NOP parked in bay {park(bays, 'LM34 NOP', 'accessible')}")
+
 print(f"Free standard bays: {free_bays(bays, 'standard')}")
 print(f"XY99 ZZZ is in bay {find(bays, 'XY99 ZZZ')}")
 print(f"QQ11 QQQ is in bay {find(bays, 'QQ11 QQQ')}")
 print("---")
 print(report("Ada Street", bays))
+
+export_bays(bays)
+print("Bay data exported to bays.txt")
