@@ -8,6 +8,15 @@ One class, describing a single parking bay. Read it before you run it.
 
 Nine lines of output. Write them all down. Pay particular attention to the two
 `park` calls: one of them does something and one of them does not.
+Bay 1 (standard): free
+True
+True
+Bay 1 (standard): AB12 CDE
+False
+False
+Bay 1 (standard): AB12 CDE
+AB12 CDE
+Bay 1 (standard): free
 
 ## Run
 
@@ -24,6 +33,14 @@ Execute and compare.
   more useful than printing "parked" inside the method?
 - `describe` reads `self.registration` but never changes it. `leave` changes it.
   Which methods ask the bay something, and which tell it to do something?
+1. When `bay = Bay(1, "standard")` executes, Python calls `__init__()`. It sets the bay's number, size and registration.
+
+2. `self` refers to the particular object the method is working with. Without `self.registration`, Python looks for a local variable called `registration`, which does not exist in `is_free()` and causes a `NameError`.
+
+3. Returning `True` or `False` allows other code to make decisions using the result. Printing inside the method would restrict how the result could be used.
+
+4. `is_free()` asks a question, `describe()` provides information, and `park()` and `leave()` change the bay's state.
+
 
 ## Modify
 

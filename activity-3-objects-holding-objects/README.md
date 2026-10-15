@@ -13,7 +13,10 @@ From the code alone, work out:
 - Which bay does each of the three cars get?
 - Which bays are free afterwards?
 - What does `find` return for a car that is not there?
-
+1. All four bays are free before any cars are parked.
+2. AB12 CDE is allocated bay 1, XY99 ZZZ is allocated bay 2, and LM34 NOP is allocated bay 3.
+3. After parking, bay 4 is the only free bay. There are no free standard bays, and the accessible bay is occupied.
+4. `find()` returns `None` if a registration is not found because the loop finishes without finding a match.
 ## Run
 
 Execute and compare.
@@ -30,6 +33,13 @@ Execute and compare.
   places would you have to change?
 - `find` compares `bay.registration == registration`. That works because a
   registration is a string. Hold that thought until activity 4.
+1. `CarPark.park()` asks a suitable `Bay` to park the car. This keeps responsibility for its registration inside the `Bay` class and avoids changing its internal state directly.
+
+2. Creating bays inside `CarPark` simplifies management because the car park controls their creation. However, it can make customising bay creation from outside less convenient.
+
+3. `report()` calls `bay.describe()` for every bay. Changing `describe()` updates the displayed format in one place.
+
+4. Registrations are strings, so `==` compares their values. This allows `find()` to match a registration correctly.
 
 ## Modify
 

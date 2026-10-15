@@ -6,13 +6,12 @@ an output a working program would produce.
 """
 
 
-# ---------- 1 ----------
+# Fault 1: Separate waiting lists
 
 class Waitlist:
-    waiting = []
-
     def __init__(self, name):
         self.name = name
+        self.waiting = []
 
     def add(self, registration):
         self.waiting.append(registration)
@@ -32,14 +31,14 @@ print(f"North waiting: {north.size()}")
 print(f"South waiting: {south.size()}")
 
 
-# ---------- 2 ----------
+# Fault 2: Correct barrier state
 
 class Barrier:
     def __init__(self):
         self.is_open = False
 
     def open_barrier(self):
-        is_open = True
+        self.is_open = True
 
     def status(self):
         if self.is_open:
@@ -54,7 +53,7 @@ barrier.open_barrier()
 print(f"After opening, barrier is {barrier.status()}")
 
 
-# ---------- 3 ----------
+# Fault 3: Correct permit comparison
 
 class Permit:
     def __init__(self, registration, zone):
@@ -62,12 +61,18 @@ class Permit:
         self.zone = zone
 
 
-issued = [Permit("AB12 CDE", "A"), Permit("XY99 ZZZ", "B")]
+issued = [
+    Permit("AB12 CDE", "A"),
+    Permit("XY99 ZZZ", "B")
+]
 
 
 def has_permit(issued, registration, zone):
-    """Return True if a permit has been issued for that car in that zone."""
-    return Permit(registration, zone) in issued
+    return any(
+        permit.registration == registration
+        and permit.zone == zone
+        for permit in issued
+    )
 
 
 print("---")
